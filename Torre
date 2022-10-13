@@ -1,0 +1,62 @@
+discos = ["|", "_", "___", "_____"]
+
+def newGame():
+    global tor
+    global total_movimentos
+    total_movimentos=-1
+    tor= [[3, 2, 1], [], []]
+    ImagemTorre()
+
+
+def ImagemTorre():
+    global total_movimentos
+    total_movimentos += 1
+    separador = ""
+    print("."*7*3)
+
+    for linhas in range(2, -1, -1):
+        for colunas in range(3):
+            try:
+                separador += discos[tor[colunas][linhas]].center(7)
+            except IndexError:
+                separador += discos[0].center(7)
+        print(separador)
+        separador = ""
+    print("."*7*3)
+
+
+def gameEngine():
+    while True:
+        m=input("Escolha o disco e para onde irá, Exemplo: [1 3] ")
+        move=[int (i)-1 for i in m.split()]
+
+        if len (tor[move[0]]):
+            if len(tor[move[1]]):
+                if tor[move[0]][-1] < tor[move[1]][-1]:
+                    tor[move[1]].append(tor[move[0]][-1])
+                    tor[move[0]].pop()
+                    ImagemTorre()
+                else:
+                    print("Não pode ser movido! pois o disco é maior!")
+
+            else:
+                tor[move[1]].append(tor[move[0]][-1])
+                tor[move[0]].pop()
+                ImagemTorre()
+        else:
+            print("Nada há mover")
+
+        #Game Over control
+        if len(tor[2])==3:
+            print ("Meus Parabéns, Você consegiu!")
+            print ("Seu total de movimentos foram", total_movimentos, "para completar a torre!")
+            break
+
+
+play ="s"
+while play =="s":
+    newGame()
+    gameEngine()
+    play=input("Quer jogar de novo? [s/n]")
+    if play == 'n':
+      print('Obrigado por jogar!\n')
